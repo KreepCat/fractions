@@ -125,13 +125,13 @@ public class EvaluateLine {
         elements[i] = reg.get(elements[i].charAt(0)).toString();
       } // if
     } // for
-    for (int i =0; i<elements.length; i++){
-      for(int n = 0; n< elements[i].length(); n++){
-        if (!(EvaluateLine.isOperation(elements[i]) || elements[i].charAt(n) == '/')){
+    for (int i = 0; i < elements.length; i++) {
+      for (int n = 0; n < elements[i].length(); n++) {
+        if (!(EvaluateLine.isOperation(elements[i]) || elements[i].charAt(n) == '/')) {
           return elements;
-        }
-      }
-    }
+        } // if
+      } // for
+    } // for
     for (int i = 0; i < elements.length; i++) {
       if (!(elements[i].contains("/") || EvaluateLine.isOperation(elements[i]))) {
         BigFraction convert = new BigFraction(new BigInteger(elements[i]), new BigInteger("1"));
