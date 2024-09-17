@@ -98,10 +98,15 @@ public class BigFraction {
         break;
       } // if
     } // for
-    String numString = str.substring(0, slashPos);
-    String denomString = str.substring(slashPos + 1, str.length());
-    this.num = new BigInteger(numString);
-    this.denom = new BigInteger(denomString);
+    if (slashPos != -1) {
+      String numString = str.substring(0, slashPos);
+      String denomString = str.substring(slashPos + 1, str.length());
+      this.num = new BigInteger(numString);
+      this.denom = new BigInteger(denomString);
+    } else {
+      this.num = new BigInteger(str);
+      this.denom = BigInteger.valueOf(1);
+    } // else
   } // BigFraction(str)
 
   /**
@@ -158,7 +163,7 @@ public class BigFraction {
     resultNumerator = (this.num.multiply(addend.denom)).add(addend.num.multiply(this.denom));
 
     // Return the computed value
-    return new BigFraction(resultNumerator, resultDenominator);
+    return new BigFraction(resultNumerator, resultDenominator).simplify();
   } // add(BigFraction)
 
   /**
@@ -168,10 +173,10 @@ public class BigFraction {
    *
    * @return the result of the subtraction.
    */
-  public BigFraction sub(BigFraction subend) {
+  public BigFraction subtract(BigFraction subend) {
     BigInteger newNum = subend.num.multiply(BigInteger.valueOf(-1));
-    return this.add(new BigFraction(newNum, subend.denom));
-  } // sub(BigFraction)
+    return this.add(new BigFraction(newNum, subend.denom)).simplify();
+  } // subtract(BigFraction)
 
 
   /**
@@ -185,7 +190,7 @@ public class BigFraction {
     BigInteger numerator = this.num.multiply(frac.num);
     BigInteger denominator = this.denom.multiply(frac.denom);
 
-    return new BigFraction(numerator, denominator);
+    return new BigFraction(numerator, denominator).simplify();
   } // multiply(BigFraction)
 
   /**
@@ -199,7 +204,7 @@ public class BigFraction {
     BigInteger numerator = this.num.multiply(frac.denom);
     BigInteger denominator = this.denom.multiply(frac.num);
 
-    return new BigFraction(numerator, denominator);
+    return new BigFraction(numerator, denominator).simplify();
   } // divide(BigFraction)
 
   /**
@@ -219,7 +224,8 @@ public class BigFraction {
    * @return the denominator
    */
   public BigInteger denominator() {
-    return this.denom;
+    BigFraction simplified = this.simplify();
+    return simplified.denom;
   } // denominator()
 
   /**
@@ -228,7 +234,8 @@ public class BigFraction {
    * @return the numerator
    */
   public BigInteger numerator() {
-    return this.num;
+    BigFraction simplified = this.simplify();
+    return simplified.num;
   } // numerator()
 
   /**
@@ -237,14 +244,18 @@ public class BigFraction {
    * @return a string that represents the fraction.
    */
   public String toString() {
+    BigFraction simplfied = this.simplify();
     // Special case: It's zero
-    if (this.num.equals(BigInteger.ZERO)) {
-      return "0/1";
+    if (simplfied.num.equals(BigInteger.ZERO)) {
+      return "0";
     } // if it's zero
+    if (simplfied.denom.equals(BigInteger.valueOf(1))) {
+      return simplfied.num.toString();
+    } // if
 
     // Lump together the string represention of the numerator,
     // a slash, and the string representation of the denominator
     // return this.num.toString().concat("/").concat(this.denom.toString());
-    return this.num + "/" + this.denom;
+    return simplfied.num + "/" + simplfied.denom;
   } // toString()
 } // class BigFraction

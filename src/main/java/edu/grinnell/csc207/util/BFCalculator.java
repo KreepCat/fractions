@@ -38,7 +38,7 @@ public class BFCalculator {
    * @param val the value to add.
    */
   public void add(BigFraction val) {
-    lastValue = lastValue.add(val);
+    lastValue = lastValue.add(val).simplify();
   } // add(BigFraction)
 
   /**
@@ -47,7 +47,7 @@ public class BFCalculator {
    * @param val the value to subtract.
    */
   public void subtract(BigFraction val) {
-    lastValue = lastValue.sub(val);
+    lastValue = lastValue.subtract(val).simplify();
   } // subtract(BigFraction)
 
   /**
@@ -56,7 +56,7 @@ public class BFCalculator {
    * @param val the value to multiply by.
    */
   public void multiply(BigFraction val) {
-    lastValue = lastValue.multiply(val);
+    lastValue = lastValue.multiply(val).simplify();
   } // multiply(BigFraction)
 
   /**
@@ -65,14 +65,14 @@ public class BFCalculator {
    * @param val the value to divide by.
    */
   public void divide(BigFraction val) {
-    lastValue = lastValue.divide(val);
+    lastValue = lastValue.divide(val).simplify();
   } // divide(BigFraction)
 
   /**
    * Resets the last computed value to 0.
    */
   public void clear() {
-    lastValue = new BigFraction(0, 0);
+    lastValue = new BigFraction(0, 1);
   } // clear()
 
 } // class BFCalculator
